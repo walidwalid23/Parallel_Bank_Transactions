@@ -81,7 +81,9 @@ def deposit(thread):
                 # account exists
                 # acquire the lock
                 if accountsList[i].accountLock.locked():
-                    print("Cannot Deposit Now Another Thread Currently Has The Lock")
+                    # MUST REDRAW THE UI CAUSE THE UI WON'T BE DRAWEN TILL THE BUTTON EXCUTE THE FUNC AND THE FUNC WON'T
+                    # FINISH EXCUTING TILL IT ACQUIRE THE LOCK
+                    root2.mainloop()
 
                 accountsList[i].accountLock.acquire()
                 time.sleep(6)
@@ -212,8 +214,10 @@ def balance(thread):
                 # account exists
                 # acquire the lock
                 if accountsList[i].accountLock.locked():
-                    print(
-                        "Cannot Get Balance Now Another Thread Currently Has The Lock")
+                    # MUST REDRAW THE UI CAUSE THE UI WON'T BE DRAWEN TILL THE BUTTON EXCUTE THE FUNC AND THE FUNC WON'T
+                    # FINISH EXCUTING TILL IT ACQUIRE THE LOCK
+                    root4.mainloop()
+
                 accountsList[i].accountLock.acquire()
                 accountExists = True
                 successLabel["text"] = "Your Current Balance Is: " + \
@@ -225,15 +229,15 @@ def balance(thread):
             successLabel["text"] = "Account Doesn't Exist"
             successLabel["fg"] = "red"
 
-    root3 = Tk()
-    root3.title(thread+" Balance")
-    root3.geometry("500x500")
+    root4 = Tk()
+    root4.title(thread+" Balance")
+    root4.geometry("500x500")
 
     depositImage = PhotoImage(
-        file="balance.png", master=root3)
+        file="balance.png", master=root4)
     depositImage = depositImage.subsample(x=20, y=20)
 
-    frame = Frame(root3, borderwidth=50)
+    frame = Frame(root4, borderwidth=50)
 
     imageLabel = Label(frame, image=depositImage)
 
@@ -254,7 +258,7 @@ def balance(thread):
     submitButton.pack()
     submitButton.place(relx=.5, rely=1.1, anchor=CENTER)
     successLabel.pack()
-    root3.mainloop()
+    root4.mainloop()
 
 
 t1 = threading.Thread(target=createAccount, args=("Thread 1",))
