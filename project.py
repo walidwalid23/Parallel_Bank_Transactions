@@ -4,6 +4,16 @@ from tkinter import simpledialog
 from tkinter import *
 from PIL import ImageTk, Image
 
+# when a thread is waiting for input it switch to other threads
+# unless they also wait for input
+# you can't take inputs in parallel in console so you must
+# take input from gui to overcome this problem
+
+# when a thread is waiting for input it switch to other threads
+# unless they also wait for input
+# you can't take inputs in parallel in console so you must
+# take input from gui to overcome this problem
+
 
 class BankAccount:
     def __init__(self, accountName, balance, lock):
@@ -136,8 +146,11 @@ def withdrawal(thread):
                 if (accountsList[i].balance - withdrawMoney >= 0):
                     # acquire the lock
                     if accountsList[i].accountLock.locked():
-                        print(
-                            "Cannot Withdraw Now Another Thread Currently Has The Lock")
+                        successLabel["text"] = "Cannot Withdraw Now Another Thread Currently Has The Lock"
+                        successLabel["fg"] = "red"
+                    # MUST REDRAW THE UI CAUSE THE UI WON'T BE DRAWEN TILL THE BUTTON EXCUTE THE FUNC AND THE FUNC WON'T
+                    # FINISH EXCUTING TILL IT ACQUIRE THE LOCK
+                        root3.mainloop()
 
                     accountsList[i].accountLock.acquire()
                     accountsList[i].balance -= withdrawMoney
